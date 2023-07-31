@@ -92,6 +92,9 @@ sleep_past_90 = sleep_data[sleep_data['day'] > sleep_data['day'].max() - timedel
 # Get past 90 days of activity_data
 activity_past_90 = activity_data[activity_data['day'] > activity_data['day'].max() - timedelta(days=90)]
 
+# Define function to return a line plot of past 90 days for column of data
+# Define function to return quarterly box plots for column of data
+
 # Create plot for quarterly HRV data
 # Create plot for last 90 days of HRV data
 hrv_past_90 = px.line(sleep_past_90, x='day', y='average_hrv', title='Past 90 Days Average HRV')
@@ -101,6 +104,8 @@ hrv_past_90.add_hline(
     line_dash='dot',
     line_color='black'
 )
+# Add caption to chart for displaying the calculate mean
+
 # Create plot for quarterly Resting Heart Rate data
 # Create plot for last 90 days of Resting Heart Rate data
 # Create plot for all time steps
