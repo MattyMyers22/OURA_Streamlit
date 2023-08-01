@@ -97,14 +97,14 @@ activity_past_90 = activity_data[activity_data['day'] > activity_data['day'].max
 
 # Create plot for quarterly HRV data
 # Create plot for last 90 days of HRV data
-hrv_past_90 = px.line(sleep_past_90, x='day', y='average_hrv', title='Past 90 Days Average HRV')
+hrv_past_90 = px.line(sleep_past_90, x='day', y='average_hrv',
+                      title=f"Past 90 Days Average HRV (daily avg. {sleep_past_90['average_hrv'].mean()})")
 # Add horizontal line to graph representing average hrv for past 90 days
 hrv_past_90.add_hline(
     y=sleep_past_90['average_hrv'].mean(),
     line_dash='dot',
     line_color='black'
 )
-# Add caption to chart for displaying the calculate mean
 
 # Create plot for quarterly Resting Heart Rate data
 # Create plot for last 90 days of Resting Heart Rate data
