@@ -93,34 +93,65 @@ sleep_past_90 = sleep_data[sleep_data['day'] > sleep_data['day'].max() - timedel
 activity_past_90 = activity_data[activity_data['day'] > activity_data['day'].max() - timedelta(days=90)]
 
 
-# Define function to return a line plot of past 90 days for column of data
-def past_90_chart(dataframe, y_value, title):
+# Define function to return a line plot of past 90 days for column of data with
+def past_90_chart(dataframe, y_value, title, trendline='mean'):
     """
-    Creates line chart for past 90 days with average trendline
+    Creates line chart for past 90 days with trendline
     :param dataframe: dataframe with past 90 days of data
     :param y_value: column name from dataframe for the y value of the chart
     :param title: title of the visualization
+    :param trendline: type of trendline, mean (default) or median
     :return: chart, the line chart for the past 90 days
     """
 
     # Create chart
     chart = px.line(dataframe, x='day', y=y_value, title=title)
-    # Add horizontal average line
-    chart.add_hline(y=dataframe[y_value].mean(),
-                    line_dash='dot',
-                    line_color='black')
+
+    # If statement to add trendline
+    if trendline == 'mean':
+        chart.add_hline(y=dataframe[y_value].mean(),
+                        line_dash='dot',
+                        line_color='black')
+    elif trendline == 'median':
+        chart.add_hline(y=dataframe[y_value].median(),
+                        line_dash='dot',
+                        line_color='black')
     # Return chart
     return chart
 
-# Define function to return quarterly box plots for column of data
+
+# Define function to return quarterly box plots for column of data with median trendline
+def qtr_chart(dataframe, y_value, title, trendline='mean'):
+    """
+    Creates boxplot chart for quarterly data with trendline
+    :param dataframe: dataframe with all time data
+    :param y_value: column name from dataframe for the y value of the chart
+    :param title: title of the visualization
+    :param trendline: type of trendline, mean (default) or median
+    :return: chart, the line chart for the past 90 days
+    """
+
+    # Create chart
+    chart = px.box(dataframe, x='qtr_year', y=y_value, title=title)
+
+    # If statement to add trendline
+    if trendline == 'mean':
+        chart.add_hline(y=dataframe[y_value].mean(),
+                        line_dash='dot',
+                        line_color='black')
+    elif trendline == 'median':
+        chart.add_hline(y=dataframe[y_value].median(),
+                        line_dash='dot',
+                        line_color='black')
+    # Return chart
+    return chart
+
 
 # Create plot for quarterly HRV data
-
+hrv_qtr = qtr_chart(sleep_data, 'average_hrv', title='Average HRV Quarterly Distributions', trendline='median')
 
 # Create plot for last 90 days of HRV data
-hrv_past_90 = past_90_chart(sleep_past_90, 'average_hrv',
-                            'Past 90 Days of Average HRV')
-
+hrv_past_90 = past_90_chart(sleep_past_90, 'average_hrv', 'Past 90 Days of Average HRV', trendline='median')
 
 # Create plot for quarterly Resting Heart Rate data
 # Create plot for last 90 days of Resting Heart Rate data
