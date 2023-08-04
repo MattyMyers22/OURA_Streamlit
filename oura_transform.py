@@ -154,7 +154,17 @@ hrv_qtr = qtr_chart(sleep_data, 'average_hrv', title='Average HRV Quarterly Dist
 hrv_past_90 = past_90_chart(sleep_past_90, 'average_hrv', 'Past 90 Days of Average HRV', trendline='median')
 
 # Create plot for quarterly Resting Heart Rate data
+heart_rate_qtr = qtr_chart(sleep_data, 'average_heart_rate', 'Average Resting Heart Rate Quarterly Distributions',
+                           trendline='median')
+
 # Create plot for last 90 days of Resting Heart Rate data
+heart_rate_past_90 = past_90_chart(sleep_past_90, 'average_heart_rate', 'Past 90 Days Average Resting Heart Rate',
+                                   trendline='median')
+
+# Create plot for quarterly Respiratory Rate
+# Create plot for last 90 days of Respiratory Rate
+# Create plot for quarterly Sleep Efficiency
+# Create plot for last 90 days of Sleep Efficiency
 # Create plot for all time steps
 # Create plot for last 90 days of steps
 
