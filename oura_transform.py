@@ -38,6 +38,12 @@ activity_columns = ['day', 'steps', 'sedentary_time']
 activity_data = data_dict['daily_activity'][activity_columns]
 # Set day column to datatime
 activity_data['day'] = pd.to_datetime(activity_data['day'])
+# Create quarter column
+activity_data['quarter'] = activity_data['day'].dt.quarter.map({1: 'Q1', 2: 'Q2', 3: 'Q3', 4: 'Q4'})
+# Create column in activity_data for year
+activity_data['year'] = activity_data['day'].dt.year
+# Create a column that concatenates quarter with year
+activity_data['qtr_year'] = (activity_data['quarter'] + ' ' + activity_data['year'].astype('str')).astype('category')
 # Set day column to dt day
 activity_data['day'] = activity_data['day'].dt.date
 
@@ -94,18 +100,22 @@ activity_past_90 = activity_data[activity_data['day'] > activity_data['day'].max
 
 
 # Define function to return a line plot of past 90 days for column of data with
-def past_90_chart(dataframe, y_value, title, trendline='mean'):
+def past_90_chart(dataframe, y_value, title, y_title, trendline='mean'):
     """
     Creates line chart for past 90 days with trendline
     :param dataframe: dataframe with past 90 days of data
     :param y_value: column name from dataframe for the y value of the chart
     :param title: title of the visualization
+    :param y_title: title for the Y axis
     :param trendline: type of trendline, mean (default) or median
     :return: chart, the line chart for the past 90 days
     """
 
     # Create chart
     chart = px.line(dataframe, x='day', y=y_value, title=title)
+
+    # Edit Y axis title
+    chart = chart.update_layout(yaxis_title=y_title)
 
     # If statement to add trendline
     if trendline == 'mean':
@@ -121,18 +131,22 @@ def past_90_chart(dataframe, y_value, title, trendline='mean'):
 
 
 # Define function to return quarterly box plots for column of data with median trendline
-def qtr_chart(dataframe, y_value, title, trendline='mean'):
+def qtr_chart(dataframe, y_value, title, y_title, trendline='mean'):
     """
     Creates boxplot chart for quarterly data with trendline
     :param dataframe: dataframe with all time data
     :param y_value: column name from dataframe for the y value of the chart
     :param title: title of the visualization
+    :param y_title: title for the Y axis
     :param trendline: type of trendline, mean (default) or median
     :return: chart, the line chart for the past 90 days
     """
 
     # Create chart
     chart = px.box(dataframe, x='qtr_year', y=y_value, title=title)
+
+    # Edit Y axis title
+    chart = chart.update_layout(yaxis_title=y_title)
 
     # If statement to add trendline
     if trendline == 'mean':
@@ -148,24 +162,42 @@ def qtr_chart(dataframe, y_value, title, trendline='mean'):
 
 
 # Create plot for quarterly HRV data
-hrv_qtr = qtr_chart(sleep_data, 'average_hrv', title='Average HRV Quarterly Distributions', trendline='median')
+hrv_qtr = qtr_chart(sleep_data, 'average_hrv', title='Average HRV Quarterly Distributions',
+                    y_title='Heart Rate Variability', trendline='median')
 
 # Create plot for last 90 days of HRV data
-hrv_past_90 = past_90_chart(sleep_past_90, 'average_hrv', 'Past 90 Days of Average HRV', trendline='median')
+hrv_past_90 = past_90_chart(sleep_past_90, 'average_hrv', 'Past 90 Days of Average HRV',
+                            y_title='Heart Rate Variability', trendline='median')
 
 # Create plot for quarterly Resting Heart Rate data
 heart_rate_qtr = qtr_chart(sleep_data, 'average_heart_rate', 'Average Resting Heart Rate Quarterly Distributions',
-                           trendline='median')
+                           y_title='Resting Heart Rate', trendline='median')
 
 # Create plot for last 90 days of Resting Heart Rate data
 heart_rate_past_90 = past_90_chart(sleep_past_90, 'average_heart_rate', 'Past 90 Days Average Resting Heart Rate',
-                                   trendline='median')
+                                   y_title='Resting Heart Rate', trendline='median')
 
 # Create plot for quarterly Respiratory Rate
+resp_rate_qtr = qtr_chart(sleep_data, 'average_breath', 'Average Respiratory Rate Quarterly Distributions',
+                          y_title='Respiratory Rate', trendline='median')
+
 # Create plot for last 90 days of Respiratory Rate
+resp_rate_past_90 = past_90_chart(sleep_past_90, 'average_breath', 'Past 90 Days Average Respiratory Rate',
+                                  y_title='Respiratory Rate', trendline='median')
+
 # Create plot for quarterly Sleep Efficiency
+sleep_effic_qtr = qtr_chart(sleep_data, 'efficiency', 'Nightly Sleep Efficiency Quarterly Distributions',
+                            y_title='Sleep Efficiency', trendline='mean')
+
 # Create plot for last 90 days of Sleep Efficiency
+sleep_effic_past_90 = past_90_chart(sleep_past_90, 'efficiency', 'Past 90 Days Nightly Sleep Efficiency',
+                                    y_title='Sleep Efficiency', trendline='mean')
+
 # Create plot for all time steps
+steps_qtr = qtr_chart(activity_data, 'steps', 'Daily Steps Quarterly Distributions', y_title='Steps', trendline='mean')
+
 # Create plot for last 90 days of steps
+steps_past_90 = past_90_chart(activity_past_90, 'steps', 'Past 90 Days Daily Steps',
+                              y_title='steps', trendline='mean')
 
 print("run ended")
