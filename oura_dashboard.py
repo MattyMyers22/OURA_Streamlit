@@ -14,7 +14,15 @@ st.title("Matthew Myers Oura Ring Data")
 st.sidebar.title("Data Category")
 
 # Create sidebar option
-data_option = st.sidebar.selectbox("Select Data Options:", ("Heart", "Respiratory", "Sleep", "Activity"))
+data_option = st.sidebar.selectbox("Select Data Options:", ("Heart", "Sleep", "Activity"))
+
+# If heart selector
+# 2x2 columns and rows for heart charts
+# Else if sleep selector
+# 2x2 columns and rows for sleep charts
+# Else
+# 2 columns for activity charts
+# List any potential data of interest?
 
 # Set dashboard header to data selected
 st.header(data_option)
