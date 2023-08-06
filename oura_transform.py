@@ -9,7 +9,7 @@ import plotly.express as px
 # Import pandas for data manipulation
 import pandas as pd
 # Import datetime and timedelta
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 # Save root url for requests
 root_url = 'https://api.ouraring.com/v2/usercollection/'
@@ -79,8 +79,6 @@ multi_sleep_days['duration_rank'] = (
 multi_sleep_days = multi_sleep_days[multi_sleep_days['duration_rank'] != 1]
 # Filter sleep data for ids not in multi_sleep_days
 sleep_data = sleep_data[~sleep_data['id'].isin(multi_sleep_days['id'])]
-
-# May need to have the chunk of code below analyzed for more efficient manipulation
 
 # Convert day column to datetime object
 sleep_data['day'] = pd.to_datetime(sleep_data['day'])
@@ -199,5 +197,3 @@ steps_qtr = qtr_chart(activity_data, 'steps', 'Daily Steps Quarterly Distributio
 # Create plot for last 90 days of steps
 steps_past_90 = past_90_chart(activity_past_90, 'steps', 'Past 90 Days Daily Steps',
                               y_title='steps', trendline='mean')
-
-print("run ended")
