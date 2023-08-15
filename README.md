@@ -2,7 +2,7 @@
 
 ### Description
 This project provides a framework for utilizing the [Oura Ring V2 API](https://cloud.ouraring.com/v2/docs) to extract 
-personal Oura ring data of interest (`oura_API_extrac.py`), transform the data to create charts (`oura_transform.py`), 
+personal Oura ring data of interest (`oura_API_extract.py`), transform the data to create charts (`oura_transform.py`), 
 and load the charts into a [streamlit](https://docs.streamlit.io/) dashboard (`oura_dashboard.py`). The dashboard  is 
 utilized to create PDFs for printing out and bringing to doctor appointments (`oura_example_report.pdf`).
 
